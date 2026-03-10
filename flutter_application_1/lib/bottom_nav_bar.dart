@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class BottomNavBar extends StatefulWidget {
   final Function(int) onTabChanged;
 
-  const BottomNavBar({Key? key, required this.onTabChanged}) : super(key: key);
+  const BottomNavBar({super.key, required this.onTabChanged});
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
@@ -30,12 +30,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.add),
-          label: 'Add',
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.settings),
-          label: 'Settings',
+          label: 'Profile',
         ),
       ],
     );

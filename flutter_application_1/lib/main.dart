@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'bottom_nav_bar.dart';
+import 'addtask.dart';
+import 'view_tasks.dart';
 
 void main() {
   runApp(const MainApp());
@@ -35,10 +37,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final List<Widget> _pages = [
-    const Center(child: Text("Home Page")),
-    const Center(child: Text("Add Page")),
-    const Center(child: Text("Settings Page")),
-  ];
+  const HomePage(),
+  const Center(child: Text("Profile Page")),
+];
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +48,77 @@ class _HomeScreenState extends State<HomeScreen> {
 
       bottomNavigationBar: BottomNavBar(
         onTabChanged: _onTabChanged,
+      ),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  Widget buildCard(String title, IconData icon, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        elevation: 6,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 40, color: Colors.blue),
+              const SizedBox(height: 10),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: GridView.count(
+        crossAxisCount: 2,
+        crossAxisSpacing: 15,
+        mainAxisSpacing: 15,
+        children: [
+          buildCard(
+            "Add Task",
+            Icons.add_circle,
+            () {
+     Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddTask(),
+      ),
+    );
+            },
+          ),
+          buildCard(
+            "View Tasks",
+            Icons.list,
+            () {
+               Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ViewTasks(),
+      ),
+    );
+            },
+          ),
+        ],
       ),
     );
   }
