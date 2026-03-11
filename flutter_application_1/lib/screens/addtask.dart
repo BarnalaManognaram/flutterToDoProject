@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'model/task.dart';
-import 'view_tasks.dart';
+import '../model/task.dart';
+import '../view_tasks.dart';
 
 class AddTask extends StatefulWidget {
   final Task? taskToEdit;
