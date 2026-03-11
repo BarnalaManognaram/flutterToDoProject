@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'model/task.dart';
+import 'view_tasks.dart';
 
 class AddTask extends StatefulWidget {
+  final Task? taskToEdit;
+  final int? editIndex;
+
+  AddTask({this.taskToEdit, this.editIndex});
+
   @override
   State<AddTask> createState() => _AddTaskState();
 }
+List<Task> taskList = [];
 
 class _AddTaskState extends State<AddTask> {
   final _formKey = GlobalKey<FormState>();
@@ -97,19 +105,30 @@ class _AddTaskState extends State<AddTask> {
               SizedBox(height: 16),
               Text('Created Date: ${_createdDate.toLocal().toString().split('.')[0]}'),
               SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Handle task creation, you can access _titleController.text,
-                    // _descriptionController.text, _status, _priority, _createdDate
-                    // and now _deadline as well.
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Task added successfully')),
-                    );
-                  }
-                },
-                child: Text('Add Task'),
-              ),
+                          ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+
+                  Task newTask = Task(
+                    title: _titleController.text,
+                    description: _descriptionController.text,
+                    status: _status,
+                    priority: _priority,
+                    createdDate: _createdDate,
+                    deadline: _deadline!,
+                  );
+
+                  taskList.add(newTask);
+
+                  // Navigate to view tasks; the screen reads from the shared list directly
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => ViewTasks()),
+                  );
+                }
+              },
+              child: Text('Add Task'),
+            ),
             ],
           ),
         ),

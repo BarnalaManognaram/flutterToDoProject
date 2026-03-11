@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'model/task.dart';
+import 'addtask.dart';
 
 class ViewTasks extends StatefulWidget {
   const ViewTasks({Key? key}) : super(key: key);
@@ -8,7 +10,8 @@ class ViewTasks extends StatefulWidget {
 }
 
 class _ViewTasksState extends State<ViewTasks> {
-  List<String> tasks = [];
+  // we'll reference the shared list directly so it always stays in sync
+  List<Task> tasks = [];
 
   @override
   void initState() {
@@ -17,13 +20,8 @@ class _ViewTasksState extends State<ViewTasks> {
   }
 
   void _loadTasks() {
-    // Replace with your actual task loading logic
     setState(() {
-      tasks = [
-        'Task 1',
-        'Task 2',
-        'Task 3',
-      ];
+      tasks = taskList; // top‑level shared list from addtask.dart
     });
   }
 
@@ -40,16 +38,51 @@ class _ViewTasksState extends State<ViewTasks> {
           : ListView.builder(
               itemCount: tasks.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(tasks[index]),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      setState(() {
-                        tasks.removeAt(index);
-                      });
-                    },
+                final task = tasks[index];
+                return Card(
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                 child: ListTile(
+                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  title: Text(task.title),
+                  tileColor: Colors.blue,
+
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ) ,
+                  subtitle: Text('${task.description} \n${task.status} • ${task.priority}'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () async {
+                          // navigate to AddTask in edit mode
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => AddTask(
+                                taskToEdit: task,
+                                editIndex: index,
+                              ),
+                            ),
+                          );
+                          if (result == true) {
+                            _loadTasks();
+                          }
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () {
+                          setState(() {
+                            // keep global list in sync
+                            taskList.removeAt(index);
+                          });
+                        },
+                      ),
+                    ],
                   ),
+                ),
                 );
               },
             ),
