@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'model/task.dart';
-import 'screens/addtask.dart';
+import '../model/task.dart';
+import 'addtask.dart';
 
 class ViewTasks extends StatefulWidget {
   const ViewTasks({Key? key}) : super(key: key);

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/splash.dart';
 import 'screens/bottom_nav_bar.dart';
 import 'screens/addtask.dart';
-import 'view_tasks.dart';
+import 'screens/view_tasks.dart';
 
 void main() {
   runApp(const MainApp());
